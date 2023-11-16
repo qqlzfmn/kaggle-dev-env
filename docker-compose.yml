@@ -1,0 +1,20 @@
+services:
+  kaggle:
+    image: gcr.io/kaggle-gpu-images/python
+    container_name: kaggle
+    volumes:
+      - /mnt/d/Workspace/Kaggle/Input:/kaggle/input:ro
+      - /mnt/d/Workspace/Kaggle/Working:/kaggle/working
+      - type: bind
+        source: /var/run/docker.sock
+        target: /var/run/docker.sock
+    tmpfs:
+      - /kaggle/temp
+    working_dir: /kaggle/working
+    deploy:
+      resources:
+        reservations:
+          devices:
+          - driver: nvidia
+            count: 1
+            capabilities: [gpu]
